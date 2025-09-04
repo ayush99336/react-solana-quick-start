@@ -1,5 +1,5 @@
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
 import { WALLET_CONNECTORS } from "@web3auth/modal";
 import { useSolanaWallet } from "@web3auth/modal/react/solana";
 import { SignTransaction } from "./components/signTransaction";
@@ -25,7 +25,7 @@ function App() {
     <div className="grid">
       <h2>Connected to {connectorName}</h2>
       <div>{accounts?.[0]}</div>
-      <div className="flex-container"> 
+      <div className="flex-container">
         <div>
           <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
@@ -44,6 +44,7 @@ function App() {
       <SignTransaction />
       <SendVersionedTransaction />
       <SwitchChain />
+
     </div>
   );
 
