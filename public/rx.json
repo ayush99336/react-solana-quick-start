@@ -1,0 +1,631 @@
+{
+  "address": "D43Xs9NAXeKBHUhDATKua8kvJhmr5gXMNPTdMfR2z29n",
+  "metadata": {
+    "name": "rx",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "create_tier",
+      "docs": [
+        "Create tier with pricing + duration + scholarship capacity.",
+        "If `token_mint == Pubkey::default()` it means SOL pricing."
+      ],
+      "discriminator": [
+        64,
+        146,
+        139,
+        178,
+        95,
+        123,
+        94,
+        244
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  97,
+                  116,
+                  111,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tier",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "index"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u32"
+        },
+        {
+          "name": "price_lamports",
+          "type": "u64"
+        },
+        {
+          "name": "token_mint",
+          "type": "pubkey"
+        },
+        {
+          "name": "duration_sec",
+          "type": "u64"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        },
+        {
+          "name": "scholarship_remaining",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "grant_scholarship",
+      "docs": [
+        "Impact feature: creator grants a free period to a beneficiary.",
+        "Decrements `scholarship_remaining`. Owner pays rent for the pass."
+      ],
+      "discriminator": [
+        101,
+        18,
+        45,
+        203,
+        83,
+        252,
+        196,
+        10
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  97,
+                  116,
+                  111,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tier",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "tier.index",
+                "account": "Tier"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pass",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tier"
+              },
+              {
+                "kind": "account",
+                "path": "beneficiary"
+              }
+            ]
+          }
+        },
+        {
+          "name": "beneficiary",
+          "docs": [
+            "Beneficiary does not need to sign to receive a scholarship."
+          ]
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init_creator",
+      "discriminator": [
+        143,
+        37,
+        67,
+        139,
+        129,
+        118,
+        169,
+        236
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  97,
+                  116,
+                  111,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "payout_wallet",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "refill_scholarships",
+      "docs": [
+        "Optional: refill scholarship pool."
+      ],
+      "discriminator": [
+        24,
+        249,
+        146,
+        80,
+        100,
+        64,
+        41,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  97,
+                  116,
+                  111,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tier",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "tier.index",
+                "account": "Tier"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "add_slots",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "subscribe_or_renew",
+      "docs": [
+        "ONE function for both \"subscribe\" and \"renew\".",
+        "- If SOL-priced, atomically transfers SOL to payout wallet.",
+        "- Then creates (if needed) or renews the pass by one duration."
+      ],
+      "discriminator": [
+        12,
+        43,
+        136,
+        90,
+        218,
+        193,
+        55,
+        92
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  97,
+                  116,
+                  111,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator.owner",
+                "account": "Creator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tier",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "tier.index",
+                "account": "Tier"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payout",
+          "writable": true
+        },
+        {
+          "name": "pass",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tier"
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Creator",
+      "discriminator": [
+        237,
+        37,
+        233,
+        153,
+        165,
+        132,
+        54,
+        103
+      ]
+    },
+    {
+      "name": "Pass",
+      "discriminator": [
+        40,
+        247,
+        140,
+        113,
+        56,
+        14,
+        57,
+        44
+      ]
+    },
+    {
+      "name": "Tier",
+      "discriminator": [
+        18,
+        149,
+        18,
+        34,
+        50,
+        201,
+        207,
+        55
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    },
+    {
+      "code": 6001,
+      "name": "NameTooLong",
+      "msg": "Name too long"
+    },
+    {
+      "code": 6002,
+      "name": "UriTooLong",
+      "msg": "URI too long"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidTierCreator",
+      "msg": "Invalid tier/creator relationship"
+    },
+    {
+      "code": 6004,
+      "name": "MathOverflow",
+      "msg": "Math overflow"
+    },
+    {
+      "code": 6005,
+      "name": "TokenPaymentsNotSupported",
+      "msg": "SPL token payments are not supported in-contract for MVP"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidPayoutWallet",
+      "msg": "Payout wallet account does not match on-chain configuration"
+    },
+    {
+      "code": 6007,
+      "name": "NoScholarshipSlots",
+      "msg": "No scholarship slots remaining"
+    }
+  ],
+  "types": [
+    {
+      "name": "Creator",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "payout_wallet",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pass",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "tier",
+            "type": "pubkey"
+          },
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "expiry_ts",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u32"
+          },
+          {
+            "name": "price_lamports",
+            "type": "u64"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "duration_sec",
+            "type": "u64"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "scholarship_remaining",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ]
+}
