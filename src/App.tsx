@@ -2,87 +2,89 @@ import "./App.css";
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
 import { WALLET_CONNECTORS } from "@web3auth/modal";
 import { useSolanaWallet } from "@web3auth/modal/react/solana";
-import { SignTransaction } from "./components/signTransaction";
-import { Balance } from "./components/getBalance";
-import { SendVersionedTransaction } from "./components/sendVersionedTransaction";
-import { SignMessage } from "./components/signMessage";
-import { SwitchChain } from "./components/switchNetwork";
+// Legacy demo components are no longer shown by default; keep imports commented if needed later
+// import { SignTransaction } from "./components/signTransaction";
+// import { Balance } from "./components/getBalance";
+// import { SendVersionedTransaction } from "./components/sendVersionedTransaction";
+// import { SignMessage } from "./components/signMessage";
+// import { SwitchChain } from "./components/switchNetwork";
+import { CreatorDashboard } from "./components/CreatorDashboard";
+import { ExclusiveContent } from "./components/ExclusiveContent";
+import { Navbar } from "./components/Navbar";
+import { useMemo, useState } from "react";
 function App() {
   const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
-  const { accounts } = useSolanaWallet();
+  const { accounts, connection } = useSolanaWallet();
+  const address = accounts?.[0] || ''
+  const shortAddr = useMemo(() => address ? `${address.slice(0, 6)}…${address.slice(-4)}` : '', [address])
+  const [copied, setCopied] = useState(false)
+  const copyAddr = async () => {
+    if (!address) return
+    try {
+      await navigator.clipboard.writeText(address)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch { }
+  }
 
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-      console.log(...args);
+  const [page, setPage] = useState<'dashboard' | 'creator' | 'fan' | 'content' | 'settings'>('dashboard')
+  const [transactionCount, setTransactionCount] = useState(0)
+
+  const renderCurrentPage = () => {
+    switch (page) {
+      case 'dashboard':
+        return (
+          <div className="grid">
+            <div className="card"><h3>Status</h3><div className="text-muted">Connected</div></div>
+            <ExclusiveContent />
+          </div>
+        )
+      case 'creator':
+        return <CreatorDashboard />
+      case 'fan':
+        return <div className="card"><h3>Fan</h3><div className="text-muted">Subscribe or renew passes.</div></div>
+      case 'content':
+        return <ExclusiveContent />
+      case 'settings':
+        return <div className="card"><h3>Settings</h3><div className="text-muted">Wallet and preferences.</div></div>
+      default:
+        return <div />
     }
   }
 
   const loggedInView = (
-    <div className="grid">
-      <h2>Connected to {connectorName}</h2>
-      <div>{accounts?.[0]}</div>
-      <div className="flex-container">
-        <div>
-          <button onClick={() => uiConsole(userInfo)} className="card">
-            Get User Info
-          </button>
-        </div>
-        <div>
-          <button onClick={() => disconnect()} className="card">
-            Log Out
-          </button>
-          {disconnectLoading && <div className="loading">Disconnecting...</div>}
-          {disconnectError && <div className="error">{disconnectError.message}</div>}
-        </div>
-      </div>
-      <Balance />
-      <SignMessage />
-      <SignTransaction />
-      <SendVersionedTransaction />
-      <SwitchChain />
-
+    <div className="app-container">
+      <Navbar
+        currentPage={page}
+        setCurrentPage={setPage}
+        disconnect={disconnect}
+        accounts={accounts}
+        connection={connection}
+        transactionCount={transactionCount}
+      />
+      <main className="main-content">
+        {disconnectError && <div className="error">{disconnectError.message}</div>}
+        {renderCurrentPage()}
+      </main>
     </div>
   );
 
   const unloggedInView = (
-    <div className="grid">
-      <button onClick={() => connect()} className="card">
-        Login
-      </button>
-      {connectLoading && <div className="loading">Connecting...</div>}
-      {connectError && <div className="error">{connectError.message}</div>}
-    </div>
-  );
-
-  return (
-    <div className="container">
-      <h1 className="title">
-        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
-          Web3Auth{" "}
-        </a>
-        & React Modal Solana Quick Start
-      </h1>
-
-      {isConnected ? loggedInView : unloggedInView}
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+    <div className="login-container">
+      <div className="login-box">
+        <h1 className="logo">Creator<span>Pass</span></h1>
+        <h2>Seedless Subscriptions on Solana</h2>
+        <p>Login with Web3Auth to manage creator tiers and unlock content.</p>
+        <button onClick={() => connect()} className="login-button">Connect with Web3Auth</button>
+        {connectLoading && <div className="loading" style={{ marginTop: 12 }}>Connecting...</div>}
+        {connectError && <div className="error" style={{ marginTop: 12 }}>{connectError.message}</div>}
       </div>
-
-      <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/web3auth-examples/tree/main/quick-starts/react-solana-quick-start"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source code
-        </a>
-      </footer>
     </div>
   );
+
+  return isConnected ? loggedInView : unloggedInView;
 }
 
 export default App;
