@@ -9,6 +9,8 @@ import { useSolanaWallet } from "@web3auth/modal/react/solana";
 // import { SignMessage } from "./components/signMessage";
 // import { SwitchChain } from "./components/switchNetwork";
 import { CreatorDashboard } from "./components/CreatorDashboard";
+import { CreatorDiscovery } from "./components/CreatorDiscovery";
+import { MySubscriptions } from "./components/MySubscriptions";
 import { ExclusiveContent } from "./components/ExclusiveContent";
 import { Navbar } from "./components/Navbar";
 import { useMemo, useState } from "react";
@@ -36,15 +38,55 @@ function App() {
     switch (page) {
       case 'dashboard':
         return (
-          <div className="grid">
-            <div className="card"><h3>Status</h3><div className="text-muted">Connected</div></div>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="card">
+                <h3>Quick Start</h3>
+                <div className="text-muted">Create subscription tiers or discover creators</div>
+                <div className="mt-4 space-y-2">
+                  <button
+                    onClick={() => setPage('creator')}
+                    className="w-full px-4 py-2 bg-[var(--primary)] text-white rounded hover:opacity-90 transition-opacity"
+                  >
+                    Create Tiers
+                  </button>
+                  <button
+                    onClick={() => setPage('fan')}
+                    className="w-full px-4 py-2 border border-[var(--border)] rounded hover:bg-[var(--background)] transition-colors"
+                  >
+                    Discover Creators
+                  </button>
+                </div>
+              </div>
+              <div className="card">
+                <h3>Wallet</h3>
+                <div className="text-muted">Connected Account</div>
+                <div className="mt-2 font-mono text-sm break-all">{shortAddr}</div>
+                <button
+                  onClick={copyAddr}
+                  className="mt-2 text-sm text-[var(--primary)] hover:underline"
+                >
+                  {copied ? 'Copied!' : 'Copy Address'}
+                </button>
+              </div>
+              <div className="card">
+                <h3>Network</h3>
+                <div className="text-muted">Solana {connection?.rpcEndpoint.includes('devnet') ? 'Devnet' : 'Mainnet'}</div>
+                <div className="text-sm mt-2">Ready for transactions</div>
+              </div>
+            </div>
             <ExclusiveContent />
           </div>
         )
       case 'creator':
         return <CreatorDashboard />
       case 'fan':
-        return <div className="card"><h3>Fan</h3><div className="text-muted">Subscribe or renew passes.</div></div>
+        return (
+          <div className="space-y-6">
+            <CreatorDiscovery excludeCurrentUser={false} />
+            <MySubscriptions />
+          </div>
+        )
       case 'content':
         return <ExclusiveContent />
       case 'settings':
