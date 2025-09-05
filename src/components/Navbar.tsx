@@ -19,24 +19,71 @@ export function Navbar({ currentPage, setCurrentPage, disconnect, accounts, conn
 
     return (
         <header className="app-header">
-            <div className="logo" onClick={() => setCurrentPage('dashboard')}>
-                Creator<span>Pass</span>
+            <div className="nav-brand">
+                <div className="logo" onClick={() => setCurrentPage('dashboard')}>
+                    Creator<span>Pass</span>
+                </div>
+                <div className="brand-subtitle">Subscription Manager</div>
             </div>
             <nav className="main-nav">
-                <Button variant={currentPage === 'dashboard' ? 'secondary' : 'ghost'} onClick={() => setCurrentPage('dashboard')}>Dashboard</Button>
-                <Button variant={currentPage === 'creator' ? 'secondary' : 'ghost'} onClick={() => setCurrentPage('creator')}>Creator</Button>
-                <Button variant={currentPage === 'fan' ? 'secondary' : 'ghost'} onClick={() => setCurrentPage('fan')}>Fan</Button>
-                <Button variant={currentPage === 'content' ? 'secondary' : 'ghost'} onClick={() => setCurrentPage('content')}>Content</Button>
-                <Button variant={currentPage === 'settings' ? 'secondary' : 'ghost'} onClick={() => setCurrentPage('settings')}>Settings</Button>
+                <Button
+                    variant={currentPage === 'dashboard' ? 'secondary' : 'ghost'}
+                    onClick={() => setCurrentPage('dashboard')}
+                    className="nav-button"
+                >
+                    🏠 Dashboard
+                </Button>
+                <Button
+                    variant={currentPage === 'creator' ? 'secondary' : 'ghost'}
+                    onClick={() => setCurrentPage('creator')}
+                    className="nav-button"
+                >
+                    📊 Creator Hub
+                </Button>
+                <Button
+                    variant={currentPage === 'fan' ? 'secondary' : 'ghost'}
+                    onClick={() => setCurrentPage('fan')}
+                    className="nav-button"
+                >
+                    🔍 Browse & Subscribe
+                </Button>
+                <Button
+                    variant={currentPage === 'content' ? 'secondary' : 'ghost'}
+                    onClick={() => setCurrentPage('content')}
+                    className="nav-button"
+                >
+                    🔒 Exclusive Content
+                </Button>
+                <Button
+                    variant={currentPage === 'solanapay' ? 'secondary' : 'ghost'}
+                    onClick={() => setCurrentPage('solanapay')}
+                    className="nav-button"
+                >
+                    💳 Solana Pay
+                </Button>
+                <Button
+                    variant={currentPage === 'settings' ? 'secondary' : 'ghost'}
+                    onClick={() => setCurrentPage('settings')}
+                    className="nav-button"
+                >
+                    ⚙️ Settings
+                </Button>
             </nav>
             <div className="user-section">
                 <div className="user-info">
                     <div className="wallet-info">
-                        <small>{short}</small>
-                        <button onClick={handleCopyAddress} className="copy-button" title="Copy address">{copyText}</button>
+                        <div className="wallet-details">
+                            <span className="wallet-label">Wallet</span>
+                            <span className="wallet-address">{short}</span>
+                        </div>
+                        <button onClick={handleCopyAddress} className="copy-button" title="Copy address">
+                            {copyText === 'Copied!' ? '✅' : '📋'}
+                        </button>
                         <BalanceDisplay connection={connection} account={address} refreshTrigger={transactionCount} />
                     </div>
-                    <button onClick={() => disconnect()} className="logout-button">Log Out</button>
+                    <button onClick={() => disconnect()} className="logout-button">
+                        🚪 Disconnect
+                    </button>
                 </div>
             </div>
         </header>

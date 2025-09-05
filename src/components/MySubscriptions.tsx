@@ -192,17 +192,18 @@ export function MySubscriptions() {
 
     if (subscriptions.length === 0) {
         return (
-            <Card>
-                <CardHeader>
-                    <CardTitle>My Subscriptions</CardTitle>
-                    <p className="text-sm text-muted">No active subscriptions. Discover creators to get started!</p>
-                </CardHeader>
-                <CardContent>
-                    <Button onClick={loadMySubscriptions} variant="outline">
-                        Refresh
-                    </Button>
-                </CardContent>
-            </Card>
+            <div className="subscriptions-container">
+                <div className="empty-state">
+                    <div className="empty-icon">📭</div>
+                    <h3>No Subscriptions Yet</h3>
+                    <p>Discover amazing creators and start your subscription journey</p>
+                    <div className="empty-actions">
+                        <Button onClick={loadMySubscriptions} className="refresh-premium-button">
+                            🔄 Check for Updates
+                        </Button>
+                    </div>
+                </div>
+            </div>
         )
     }
 
@@ -210,72 +211,115 @@ export function MySubscriptions() {
     const expiredSubscriptions = subscriptions.filter(sub => !sub.isActive)
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">My Subscriptions ({subscriptions.length})</h2>
-                <Button onClick={loadMySubscriptions} variant="outline" size="sm">
-                    Refresh
+        <div className="subscriptions-container">
+            {/* Header */}
+            <div className="subscriptions-header">
+                <div>
+                    <h2 className="subscriptions-title">📋 My Subscriptions</h2>
+                    <div className="subscriptions-stats">
+                        <span className="stat-badge active">
+                            🟢 {activeSubscriptions.length} Active
+                        </span>
+                        <span className="stat-badge expired">
+                            🟠 {expiredSubscriptions.length} Expired
+                        </span>
+                    </div>
+                </div>
+                <Button onClick={loadMySubscriptions} className="refresh-premium-button">
+                    🔄 Refresh Subscriptions
                 </Button>
             </div>
 
+            {/* Active Subscriptions */}
             {activeSubscriptions.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-green-600">Active Subscriptions ({activeSubscriptions.length})</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid gap-4">
-                            {activeSubscriptions.map((sub, index) => (
-                                <div key={index} className="flex justify-between items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                                    <div>
-                                        <div className="font-semibold text-green-800 dark:text-green-200">{sub.tierName}</div>
-                                        <div className="text-sm text-green-600 dark:text-green-400">
-                                            Creator: {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
-                                        </div>
-                                        <div className="text-sm text-green-600 dark:text-green-400">
-                                            Expires: {sub.expiryDate.toLocaleDateString()}
+                <div className="subscription-section">
+                    <div className="section-header">
+                        <h3 className="section-title active">
+                            <span className="status-indicator active"></span>
+                            Active Subscriptions
+                        </h3>
+                        <span className="section-count">{activeSubscriptions.length}</span>
+                    </div>
+                    <div className="subscription-grid">
+                        {activeSubscriptions.map((sub, index) => (
+                            <div key={index} className="subscription-card active">
+                                <div className="card-header">
+                                    <div className="tier-info">
+                                        <h4 className="tier-name">{sub.tierName}</h4>
+                                        <div className="creator-info">
+                                            👤 {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
                                         </div>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="font-bold text-green-800 dark:text-green-200">{sub.price}</div>
-                                        <div className="text-xs text-green-600 dark:text-green-400">{sub.duration}</div>
-                                        <div className="text-xs font-medium text-green-700 dark:text-green-300 mt-1">ACTIVE</div>
+                                    <div className="status-badge active">
+                                        ✅ ACTIVE
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                                <div className="card-content">
+                                    <div className="subscription-details">
+                                        <div className="detail-item">
+                                            <span className="detail-label">💰 Price</span>
+                                            <span className="detail-value">{sub.price}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">⏰ Duration</span>
+                                            <span className="detail-value">{sub.duration}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">📅 Expires</span>
+                                            <span className="detail-value expiry">{sub.expiryDate.toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
 
+            {/* Expired Subscriptions */}
             {expiredSubscriptions.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-orange-600">Expired Subscriptions ({expiredSubscriptions.length})</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid gap-4">
-                            {expiredSubscriptions.map((sub, index) => (
-                                <div key={index} className="flex justify-between items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
-                                    <div>
-                                        <div className="font-semibold text-orange-800 dark:text-orange-200">{sub.tierName}</div>
-                                        <div className="text-sm text-orange-600 dark:text-orange-400">
-                                            Creator: {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
-                                        </div>
-                                        <div className="text-sm text-orange-600 dark:text-orange-400">
-                                            Expired: {sub.expiryDate.toLocaleDateString()}
+                <div className="subscription-section">
+                    <div className="section-header">
+                        <h3 className="section-title expired">
+                            <span className="status-indicator expired"></span>
+                            Expired Subscriptions
+                        </h3>
+                        <span className="section-count">{expiredSubscriptions.length}</span>
+                    </div>
+                    <div className="subscription-grid">
+                        {expiredSubscriptions.map((sub, index) => (
+                            <div key={index} className="subscription-card expired">
+                                <div className="card-header">
+                                    <div className="tier-info">
+                                        <h4 className="tier-name">{sub.tierName}</h4>
+                                        <div className="creator-info">
+                                            👤 {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
                                         </div>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="font-bold text-orange-800 dark:text-orange-200">{sub.price}</div>
-                                        <div className="text-xs text-orange-600 dark:text-orange-400">{sub.duration}</div>
-                                        <div className="text-xs font-medium text-orange-700 dark:text-orange-300 mt-1">EXPIRED</div>
+                                    <div className="status-badge expired">
+                                        ⏰ EXPIRED
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                                <div className="card-content">
+                                    <div className="subscription-details">
+                                        <div className="detail-item">
+                                            <span className="detail-label">💰 Price</span>
+                                            <span className="detail-value">{sub.price}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">⏰ Duration</span>
+                                            <span className="detail-value">{sub.duration}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">📅 Expired</span>
+                                            <span className="detail-value expired-date">{sub.expiryDate.toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
         </div>
     )

@@ -12,6 +12,8 @@ import { CreatorDashboard } from "./components/CreatorDashboard";
 import { CreatorDiscovery } from "./components/CreatorDiscovery";
 import { MySubscriptions } from "./components/MySubscriptions";
 import { ExclusiveContent } from "./components/ExclusiveContent";
+import { SolanaPay } from "./components/solanaPay";
+import { SolanaPayExample } from "./components/SolanaPayIntegration";
 import { Navbar } from "./components/Navbar";
 import { useMemo, useState } from "react";
 function App() {
@@ -31,51 +33,73 @@ function App() {
     } catch { }
   }
 
-  const [page, setPage] = useState<'dashboard' | 'creator' | 'fan' | 'content' | 'settings'>('dashboard')
+  const [page, setPage] = useState<'dashboard' | 'creator' | 'fan' | 'content' | 'solanapay' | 'settings'>('dashboard')
   const [transactionCount, setTransactionCount] = useState(0)
 
   const renderCurrentPage = () => {
     switch (page) {
       case 'dashboard':
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="card">
-                <h3>Quick Start</h3>
-                <div className="text-muted">Create subscription tiers or discover creators</div>
-                <div className="mt-4 space-y-2">
+          <div className="dashboard-container">
+            {/* Header Section */}
+            <div className="dashboard-header">
+              <div>
+                <h1 className="dashboard-title">Subscription Manager</h1>
+                <p className="dashboard-subtitle">Manage your Web3 subscriptions and creator content</p>
+              </div>
+              <div className="dashboard-actions">
+                <button
+                  onClick={() => setPage('creator')}
+                  className="action-button primary"
+                >
+                  📊 Creator Dashboard
+                </button>
+                <button
+                  onClick={() => setPage('fan')}
+                  className="action-button secondary"
+                >
+                  🔍 Browse Creators
+                </button>
+              </div>
+            </div>
+
+            {/* Stats Overview */}
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-icon">💳</div>
+                <div className="stat-content">
+                  <h3>Wallet</h3>
+                  <div className="stat-value">{shortAddr}</div>
                   <button
-                    onClick={() => setPage('creator')}
-                    className="w-full px-4 py-2 bg-[var(--primary)] text-white rounded hover:opacity-90 transition-opacity"
+                    onClick={copyAddr}
+                    className="stat-action"
                   >
-                    Create Tiers
-                  </button>
-                  <button
-                    onClick={() => setPage('fan')}
-                    className="w-full px-4 py-2 border border-[var(--border)] rounded hover:bg-[var(--background)] transition-colors"
-                  >
-                    Discover Creators
+                    {copied ? '✅ Copied!' : '📋 Copy Address'}
                   </button>
                 </div>
               </div>
-              <div className="card">
-                <h3>Wallet</h3>
-                <div className="text-muted">Connected Account</div>
-                <div className="mt-2 font-mono text-sm break-all">{shortAddr}</div>
-                <button
-                  onClick={copyAddr}
-                  className="mt-2 text-sm text-[var(--primary)] hover:underline"
-                >
-                  {copied ? 'Copied!' : 'Copy Address'}
-                </button>
+              <div className="stat-card">
+                <div className="stat-icon">🌐</div>
+                <div className="stat-content">
+                  <h3>Network</h3>
+                  <div className="stat-value">Solana {connection?.rpcEndpoint.includes('devnet') ? 'Devnet' : 'Mainnet'}</div>
+                  <div className="stat-status online">🟢 Connected</div>
+                </div>
               </div>
-              <div className="card">
-                <h3>Network</h3>
-                <div className="text-muted">Solana {connection?.rpcEndpoint.includes('devnet') ? 'Devnet' : 'Mainnet'}</div>
-                <div className="text-sm mt-2">Ready for transactions</div>
+              <div className="stat-card">
+                <div className="stat-icon">⚡</div>
+                <div className="stat-content">
+                  <h3>Transactions</h3>
+                  <div className="stat-value">{transactionCount}</div>
+                  <div className="stat-status">Total completed</div>
+                </div>
               </div>
             </div>
-            <ExclusiveContent />
+
+            {/* Main Content */}
+            <div className="dashboard-content">
+              <ExclusiveContent />
+            </div>
           </div>
         )
       case 'creator':
@@ -89,6 +113,13 @@ function App() {
         )
       case 'content':
         return <ExclusiveContent />
+      case 'solanapay':
+        return (
+          <div className="space-y-6">
+            <SolanaPay />
+            <SolanaPayExample />
+          </div>
+        )
       case 'settings':
         return <div className="card"><h3>Settings</h3><div className="text-muted">Wallet and preferences.</div></div>
       default:
@@ -116,12 +147,30 @@ function App() {
   const unloggedInView = (
     <div className="login-container">
       <div className="login-box">
-        <h1 className="logo">Creator<span>Pass</span></h1>
-        <h2>Seedless Subscriptions on Solana</h2>
-        <p>Login with Web3Auth to manage creator tiers and unlock content.</p>
-        <button onClick={() => connect()} className="login-button">Connect with Web3Auth</button>
-        {connectLoading && <div className="loading" style={{ marginTop: 12 }}>Connecting...</div>}
-        {connectError && <div className="error" style={{ marginTop: 12 }}>{connectError.message}</div>}
+        <div className="login-header">
+          <h1 className="logo">Creator<span>Pass</span></h1>
+          <div className="login-badge">💎 Premium</div>
+        </div>
+        <h2>Web3 Subscription Manager</h2>
+        <p className="login-description">
+          🚀 Manage creator subscriptions seamlessly on Solana<br />
+          🔐 Secure, seedless authentication with Web3Auth<br />
+          💰 Direct creator support & exclusive content access
+        </p>
+        <button onClick={() => connect()} className="login-button">
+          🔗 Connect Wallet & Get Started
+        </button>
+        {connectLoading && (
+          <div className="loading-state">
+            <div className="loading-spinner"></div>
+            <span>Connecting your wallet...</span>
+          </div>
+        )}
+        {connectError && (
+          <div className="error-state">
+            ⚠️ {connectError.message}
+          </div>
+        )}
       </div>
     </div>
   );

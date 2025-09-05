@@ -156,127 +156,167 @@ export function CreatorDashboard() {
 
     if (creatorState === 'not-initialized') {
         return (
-            <div className="max-w-2xl mx-auto">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Welcome to CreatorPass!</CardTitle>
-                        <p className="text-muted">Set up your creator account to start offering subscription tiers.</p>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={initCreator} className="space-y-4">
-                            <div>
-                                <Label htmlFor="payout">Payout Wallet Address</Label>
-                                <Input
-                                    id="payout"
-                                    name="payout"
-                                    placeholder="Enter wallet address for payments"
-                                    defaultValue={owner || ''}
-                                    required
-                                />
-                                <p className="text-xs text-muted mt-1">This is where subscription payments will be sent</p>
-                            </div>
-                            <Button type="submit" disabled={loading} className="w-full">
-                                {loading ? 'Setting up...' : 'Initialize Creator Account'}
-                            </Button>
-                        </form>
-                        {error && <div className="text-red-500 text-sm mt-2">{error.message}</div>}
-                    </CardContent>
-                </Card>
+            <div className="creator-setup-container">
+                <div className="setup-card">
+                    <div className="setup-header">
+                        <div className="setup-icon">🎨</div>
+                        <h1 className="setup-title">Welcome to CreatorPass!</h1>
+                        <p className="setup-subtitle">
+                            🚀 Transform your content into sustainable income<br/>
+                            💰 Create subscription tiers and manage your community<br/>
+                            🔐 Secure Web3 payments with zero hassle
+                        </p>
+                    </div>
+                    <form onSubmit={initCreator} className="setup-form">
+                        <div className="form-group">
+                            <Label htmlFor="payout" className="form-label">
+                                💳 Payout Wallet Address
+                            </Label>
+                            <Input
+                                id="payout"
+                                name="payout"
+                                placeholder="Enter wallet address for payments"
+                                defaultValue={owner || ''}
+                                required
+                                className="setup-input"
+                            />
+                            <p className="form-help">
+                                💵 All subscription payments will be sent directly to this wallet
+                            </p>
+                        </div>
+                        <Button type="submit" disabled={loading} className="setup-button">
+                            {loading ? '⏳ Setting up your creator account...' : '🚀 Initialize Creator Account'}
+                        </Button>
+                    </form>
+                    {error && (
+                        <div className="setup-error">
+                            ⚠️ {error.message}
+                        </div>
+                    )}
+                </div>
             </div>
         )
     }
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold">Creator Dashboard</h1>
-                <p className="text-muted">Manage your subscription tiers and earnings</p>
+        <div className="creator-dashboard-container">
+            {/* Header */}
+            <div className="creator-header">
+                <div>
+                    <h1 className="creator-title">🎨 Creator Dashboard</h1>
+                    <p className="creator-subtitle">Manage your subscription tiers and grow your community</p>
+                </div>
+                <div className="creator-stats">
+                    <div className="stat-item">
+                        <span className="stat-value">{existingTiers.length}</span>
+                        <span className="stat-label">Active Tiers</span>
+                    </div>
+                </div>
             </div>
 
             {/* Creator Info */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Account Info</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <Label>Payout Wallet</Label>
-                            <div className="text-sm font-mono bg-[var(--background)] p-2 rounded">
+            <div className="creator-info-section">
+                <h2 className="section-title">📋 Account Overview</h2>
+                <div className="info-grid">
+                    <div className="info-card">
+                        <div className="info-icon">💳</div>
+                        <div className="info-content">
+                            <h3>Payout Wallet</h3>
+                            <div className="wallet-address">
                                 {payoutWallet.slice(0, 8)}...{payoutWallet.slice(-8)}
                             </div>
                         </div>
-                        <div>
-                            <Label>Active Tiers</Label>
-                            <div className="text-2xl font-bold text-[var(--primary)]">{existingTiers.length}</div>
+                    </div>
+                    <div className="info-card">
+                        <div className="info-icon">📈</div>
+                        <div className="info-content">
+                            <h3>Total Tiers</h3>
+                            <div className="tier-count">{existingTiers.length}/5</div>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Existing Tiers */}
             {existingTiers.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Your Subscription Tiers</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid gap-4">
-                            {existingTiers.map((tier) => (
-                                <div key={tier.index} className="flex justify-between items-center p-4 bg-[var(--background)] rounded-lg">
-                                    <div>
-                                        <div className="font-semibold">{tier.name}</div>
-                                        <div className="text-sm text-muted">
-                                            {tier.duration} • {tier.scholarshipRemaining} scholarships remaining
+                <div className="tiers-section">
+                    <h2 className="section-title">🏆 Your Subscription Tiers</h2>
+                    <div className="tiers-grid">
+                        {existingTiers.map((tier) => (
+                            <div key={tier.index} className="tier-card">
+                                <div className="tier-header">
+                                    <div className="tier-badge">Tier {tier.index}</div>
+                                    <div className="tier-price">{tier.price}</div>
+                                </div>
+                                <div className="tier-content">
+                                    <h3 className="tier-name">{tier.name}</h3>
+                                    <div className="tier-details">
+                                        <div className="tier-detail">
+                                            <span className="detail-icon">⏰</span>
+                                            <span>{tier.duration}</span>
+                                        </div>
+                                        <div className="tier-detail">
+                                            <span className="detail-icon">🎁</span>
+                                            <span>{tier.scholarshipRemaining} free passes</span>
                                         </div>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="text-lg font-bold text-[var(--primary)]">{tier.price}</div>
-                                        <div className="text-xs text-muted">Tier {tier.index}</div>
-                                    </div>
                                 </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
 
             {/* Create New Tier */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Create New Subscription Tier</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={createTier} className="grid gap-4 md:grid-cols-2">
-                        <div>
-                            <Label htmlFor="name">Tier Name</Label>
-                            <Input id="name" name="name" placeholder="e.g., Premium Access" required />
+            <div className="create-tier-section">
+                <h2 className="section-title">➕ Create New Subscription Tier</h2>
+                <div className="create-tier-card">
+                    <form onSubmit={createTier} className="tier-form">
+                        <div className="form-row">
+                            <div className="form-group">
+                                <Label htmlFor="name" className="form-label">
+                                    🏷️ Tier Name
+                                </Label>
+                                <Input id="name" name="name" placeholder="e.g., Premium Access" required className="form-input" />
+                            </div>
+                            <div className="form-group">
+                                <Label htmlFor="priceSOL" className="form-label">
+                                    💰 Price (SOL)
+                                </Label>
+                                <Input id="priceSOL" name="priceSOL" type="number" step="0.001" placeholder="0.1" required className="form-input" />
+                            </div>
                         </div>
-                        <div>
-                            <Label htmlFor="priceSOL">Price (SOL)</Label>
-                            <Input id="priceSOL" name="priceSOL" type="number" step="0.001" placeholder="0.1" required />
+                        <div className="form-row">
+                            <div className="form-group">
+                                <Label htmlFor="durationDays" className="form-label">
+                                    📅 Duration (Days)
+                                </Label>
+                                <Input id="durationDays" name="durationDays" type="number" placeholder="30" required className="form-input" />
+                            </div>
+                            <div className="form-group">
+                                <Label htmlFor="scholarshipRemaining" className="form-label">
+                                    🎁 Free Passes
+                                </Label>
+                                <Input id="scholarshipRemaining" name="scholarshipRemaining" type="number" placeholder="0" className="form-input" />
+                            </div>
                         </div>
-                        <div>
-                            <Label htmlFor="durationDays">Duration (Days)</Label>
-                            <Input id="durationDays" name="durationDays" type="number" placeholder="30" required />
+                        <div className="form-group full-width">
+                            <Label htmlFor="uri" className="form-label">
+                                🔗 Content URL (optional)
+                            </Label>
+                            <Input id="uri" name="uri" placeholder="https://your-exclusive-content.com" className="form-input" />
                         </div>
-                        <div>
-                            <Label htmlFor="scholarshipRemaining">Free Passes</Label>
-                            <Input id="scholarshipRemaining" name="scholarshipRemaining" type="number" placeholder="0" />
-                        </div>
-                        <div className="md:col-span-2">
-                            <Label htmlFor="uri">Content URL (optional)</Label>
-                            <Input id="uri" name="uri" placeholder="https://your-content-url.com" />
-                        </div>
-                        <div className="md:col-span-2">
-                            <Button type="submit" disabled={loading} className="w-full">
-                                {loading ? 'Creating...' : `Create Tier ${existingTiers.length}`}
-                            </Button>
-                        </div>
+                        <Button type="submit" disabled={loading} className="create-tier-button">
+                            {loading ? '⏳ Creating tier...' : `🚀 Create Tier ${existingTiers.length}`}
+                        </Button>
                     </form>
-                    {error && <div className="text-red-500 text-sm mt-2">{error.message}</div>}
-                </CardContent>
-            </Card>
+                    {error && (
+                        <div className="form-error">
+                            ⚠️ {error.message}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
