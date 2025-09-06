@@ -3,6 +3,7 @@ import { useSolanaWallet } from '@web3auth/modal/react/solana'
 import { PublicKey } from '@solana/web3.js'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
+import Icon from './Icon'
 import { RX_PROGRAM_ADDRESS } from '../../codama/client/js/generated/programs'
 import bs58 from 'bs58'
 
@@ -194,12 +195,15 @@ export function MySubscriptions() {
         return (
             <div className="subscriptions-container">
                 <div className="empty-state">
-                    <div className="empty-icon">📭</div>
+                    <div className="empty-icon">
+                        <Icon name="user" className="w-12 h-12 text-gray-400" />
+                    </div>
                     <h3>No Subscriptions Yet</h3>
                     <p>Discover amazing creators and start your subscription journey</p>
                     <div className="empty-actions">
                         <Button onClick={loadMySubscriptions} className="refresh-premium-button">
-                            🔄 Check for Updates
+                            <Icon name="refresh" className="mr-2" />
+                            Check for Updates
                         </Button>
                     </div>
                 </div>
@@ -218,9 +222,11 @@ export function MySubscriptions() {
                     <h2 className="subscriptions-title">My Subscriptions</h2>
                     <div className="subscriptions-stats">
                         <span className="stat-badge active">
+                            <Icon name="check" className="mr-2" />
                             {activeSubscriptions.length} Active
                         </span>
                         <span className="stat-badge expired">
+                            <Icon name="error" className="mr-2" />
                             {expiredSubscriptions.length} Expired
                         </span>
                     </div>
@@ -236,6 +242,7 @@ export function MySubscriptions() {
                     <div className="section-header">
                         <h3 className="section-title active">
                             <span className="status-indicator active"></span>
+                            <Icon name="check" className="mr-2" />
                             Active Subscriptions
                         </h3>
                         <span className="section-count">{activeSubscriptions.length}</span>
@@ -251,7 +258,7 @@ export function MySubscriptions() {
                                         </div>
                                     </div>
                                     <div className="status-badge active">
-                                        ACTIVE
+                                        <Icon name="check" className="mr-2" /> ACTIVE
                                     </div>
                                 </div>
                                 <div className="card-content">
@@ -265,7 +272,7 @@ export function MySubscriptions() {
                                             <span className="detail-value">{sub.duration}</span>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">📅 Expires</span>
+                                            <span className="detail-label"><Icon name="qr" className="mr-2" />Expires</span>
                                             <span className="detail-value expiry">{sub.expiryDate.toLocaleDateString()}</span>
                                         </div>
                                     </div>
@@ -293,25 +300,25 @@ export function MySubscriptions() {
                                     <div className="tier-info">
                                         <h4 className="tier-name">{sub.tierName}</h4>
                                         <div className="creator-info">
-                                            👤 {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
+                                            <Icon name="user" className="mr-2" />{sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
                                         </div>
                                     </div>
                                     <div className="status-badge expired">
-                                        ⏰ EXPIRED
+                                        <Icon name="error" className="mr-2" />EXPIRED
                                     </div>
                                 </div>
                                 <div className="card-content">
                                     <div className="subscription-details">
                                         <div className="detail-item">
-                                            <span className="detail-label">💰 Price</span>
+                                            <span className="detail-label"><Icon name="wallet" className="mr-2" />Price</span>
                                             <span className="detail-value">{sub.price}</span>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">⏰ Duration</span>
+                                            <span className="detail-label"><Icon name="refresh" className="mr-2" />Duration</span>
                                             <span className="detail-value">{sub.duration}</span>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">📅 Expired</span>
+                                            <span className="detail-label"><Icon name="qr" className="mr-2" />Expired</span>
                                             <span className="detail-value expired-date">{sub.expiryDate.toLocaleDateString()}</span>
                                         </div>
                                     </div>

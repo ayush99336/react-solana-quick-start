@@ -14,6 +14,7 @@ import { MySubscriptions } from "./components/MySubscriptions";
 import { ExclusiveContent } from "./components/ExclusiveContent";
 import { SolanaPayHub } from "./components/SolanaPayHub";
 import { Navbar } from "./components/Navbar";
+import Icon from './components/Icon'
 import { useMemo, useState } from "react";
 function App() {
   const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
@@ -49,20 +50,23 @@ function App() {
               <div className="dashboard-actions">
                 <button
                   onClick={() => setPage('creator')}
-                  className="action-button primary"
+                  className="action-button primary flex items-center"
                 >
-                  📊 Creator Dashboard
+                  <Icon name="home" className="mr-2" />
+                  Creator Dashboard
                 </button>
                 <button
                   onClick={() => setPage('fan')}
-                  className="action-button secondary"
+                  className="action-button secondary flex items-center"
                 >
+                  <Icon name="search" className="mr-2" />
                   Browse Creators
                 </button>
                 <button
                   onClick={() => setPage('solanapay')}
-                  className="action-button accent"
+                  className="action-button accent flex items-center"
                 >
+                  <Icon name="wallet" className="mr-2" />
                   Fund Wallet
                 </button>
               </div>
@@ -84,7 +88,7 @@ function App() {
                 </div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">🌐</div>
+                <div className="stat-icon"><Icon name="settings" /></div>
                 <div className="stat-content">
                   <h3>Network</h3>
                   <div className="stat-value">Solana {connection?.rpcEndpoint.includes('devnet') ? 'Devnet' : 'Mainnet'}</div>
@@ -92,7 +96,7 @@ function App() {
                 </div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">⚡</div>
+                <div className="stat-icon"><Icon name="check" /></div>
                 <div className="stat-content">
                   <h3>Transactions</h3>
                   <div className="stat-value">{transactionCount}</div>
@@ -157,8 +161,9 @@ function App() {
           Secure, seedless authentication with Web3Auth<br />
           Direct creator support & exclusive content access
         </p>
-        <button onClick={() => connect()} className="login-button">
-          🔗 Connect Wallet & Get Started
+        <button onClick={() => connect()} className="login-button flex items-center justify-center">
+          <Icon name="wallet" className="mr-2" />
+          Connect Wallet & Get Started
         </button>
         {connectLoading && (
           <div className="loading-state">
@@ -167,8 +172,9 @@ function App() {
           </div>
         )}
         {connectError && (
-          <div className="error-state">
-            ⚠️ {connectError.message}
+          <div className="error-state flex items-center text-red-600">
+            <Icon name="error" className="mr-2" />
+            {connectError.message}
           </div>
         )}
       </div>

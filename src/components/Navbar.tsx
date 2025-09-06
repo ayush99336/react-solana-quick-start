@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { BalanceDisplay } from './BalanceDisplay'
+import Icon from './Icon'
 
 export function Navbar({ currentPage, setCurrentPage, disconnect, accounts, connection, transactionCount }: any) {
     const [copyText, setCopyText] = useState('Copy')
@@ -76,13 +77,13 @@ export function Navbar({ currentPage, setCurrentPage, disconnect, accounts, conn
                             <span className="wallet-label">Wallet</span>
                             <span className="wallet-address">{short}</span>
                         </div>
-                        <button onClick={handleCopyAddress} className="copy-button" title="Copy address">
-                            {copyText === 'Copied!' ? 'Copied!' : 'Copy'}
+                        <button onClick={handleCopyAddress} className="copy-button" title="Copy address" aria-label="Copy address">
+                            <Icon name="copy" className="text-gray-600" />
                         </button>
                         <BalanceDisplay connection={connection} account={address} refreshTrigger={transactionCount} />
                     </div>
                     <button onClick={() => disconnect()} className="logout-button">
-                        🚪 Disconnect
+                        <Icon name="settings" className="mr-2" /> Disconnect
                     </button>
                 </div>
             </div>
