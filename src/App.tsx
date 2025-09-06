@@ -152,7 +152,7 @@ function App() {
     <div className="login-container">
       <div className="login-box">
         <div className="login-header">
-          <h1 className="logo">Creator<span>Pass</span></h1>
+          <h1 className="logo">Sub<span>Sync</span></h1>
           <div className="login-badge">Premium</div>
         </div>
         <h2>Web3 Subscription Manager</h2>

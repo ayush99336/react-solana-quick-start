@@ -22,7 +22,7 @@ export function Navbar({ currentPage, setCurrentPage, disconnect, accounts, conn
         <header className="app-header">
             <div className="nav-brand">
                 <div className="logo" onClick={() => setCurrentPage('dashboard')}>
-                    Creator<span>Pass</span>
+                    Sub<span>Sync</span>
                 </div>
                 <div className="brand-subtitle">Subscription Manager</div>
             </div>

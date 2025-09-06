@@ -110,11 +110,11 @@ export function SolanaPayHub() {
                             </div>
                         </div>
 
-                        {/* Use Cases in CreatorPass */}
+                        {/* Use Cases in SubSync */}
                         <div className="shadow-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900 dark:to-pink-900 rounded-lg overflow-hidden mx-auto w-full">
                             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                                 <h3 className="flex items-center gap-2 text-2xl text-purple-700 dark:text-purple-200">
-                                    <Icon name="home" className="w-6 h-6" /> Use Cases in CreatorPass
+                                    <Icon name="home" className="w-6 h-6" /> Use Cases in SubSync
                                 </h3>
                             </div>
                             <div className="p-6 bg-white dark:bg-purple-950 space-y-4">

@@ -1,8 +1,24 @@
 {
-  "name": "react-solana-quick-start",
+  "name": "subsync-creator-platform",
+  "description": "Decentralized creator subscription platform with Web3Auth embedded wallets and Solana Pay integration",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "keywords": [
+    "web3auth",
+    "solana",
+    "creator-economy",
+    "subscriptions",
+    "blockchain",
+    "embedded-wallets",
+    "solana-pay"
+  ],
+  "author": "SubSync Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ayush99336/subsync-creator-platform"
+  },
   "scripts": {
     "start": "vite",
     "dev": "vite",

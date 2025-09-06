@@ -67,7 +67,7 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
                 amount: new BigNumber(amount),
                 reference: newReference,
                 label: `Fund Wallet - ${amount} SOL`,
-                message: `Add ${amount} SOL to your CreatorPass wallet`,
+                message: `Add ${amount} SOL to your SubSync wallet`,
                 memo: `FUND-${Date.now()}`
             }
 
@@ -293,7 +293,7 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
                                     <li>Generate the funding QR code</li>
                                     <li>Open your external wallet (Phantom, Solflare, etc.)</li>
                                     <li>Scan the QR code or paste the funding URL</li>
-                                    <li>Approve the transaction to fund your CreatorPass wallet</li>
+                                    <li>Approve the transaction to fund your SubSync wallet</li>
                                 </ol>
                                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
                                     ⚠️ This adds SOL from an external wallet to your current connected wallet

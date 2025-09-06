@@ -160,7 +160,7 @@ export function CreatorDashboard() {
                 <div className="setup-card">
                     <div className="setup-header">
                         <div className="setup-icon">🎨</div>
-                        <h1 className="setup-title">Welcome to CreatorPass!</h1>
+                        <h1 className="setup-title">Welcome to SubSync!</h1>
                         <p className="setup-subtitle">
                             Transform your content into sustainable income<br />
                             Create subscription tiers and manage your community<br />
