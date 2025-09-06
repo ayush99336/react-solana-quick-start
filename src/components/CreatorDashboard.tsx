@@ -162,15 +162,15 @@ export function CreatorDashboard() {
                         <div className="setup-icon">🎨</div>
                         <h1 className="setup-title">Welcome to CreatorPass!</h1>
                         <p className="setup-subtitle">
-                            🚀 Transform your content into sustainable income<br/>
-                            💰 Create subscription tiers and manage your community<br/>
+                            Transform your content into sustainable income<br />
+                            Create subscription tiers and manage your community<br />
                             🔐 Secure Web3 payments with zero hassle
                         </p>
                     </div>
                     <form onSubmit={initCreator} className="setup-form">
                         <div className="form-group">
                             <Label htmlFor="payout" className="form-label">
-                                💳 Payout Wallet Address
+                                Payout Wallet Address
                             </Label>
                             <Input
                                 id="payout"
@@ -185,7 +185,7 @@ export function CreatorDashboard() {
                             </p>
                         </div>
                         <Button type="submit" disabled={loading} className="setup-button">
-                            {loading ? '⏳ Setting up your creator account...' : '🚀 Initialize Creator Account'}
+                            {loading ? 'Setting up your creator account...' : 'Initialize Creator Account'}
                         </Button>
                     </form>
                     {error && (

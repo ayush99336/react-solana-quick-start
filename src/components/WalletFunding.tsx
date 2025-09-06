@@ -26,12 +26,12 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
 
         const monitorPayment = async () => {
             try {
-                console.log('🔍 Monitoring for funding payment...')
+                console.log('Monitoring for funding payment...')
                 const signatureInfo = await findReference(connection, reference, {
                     finality: 'confirmed'
                 })
 
-                console.log('✅ Funding payment confirmed!', signatureInfo.signature)
+                console.log('Funding payment confirmed!', signatureInfo.signature)
                 setPaymentStatus('confirmed')
 
                 if (onFundingComplete) {
@@ -55,7 +55,7 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
 
         try {
             setPaymentStatus('generating')
-            console.log('💰 Creating wallet funding request...')
+            console.log('Creating wallet funding request...')
 
             // Generate a unique reference for this payment
             const newReference = Keypair.generate().publicKey
@@ -85,7 +85,7 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
 
             setPaymentStatus('pending')
 
-            console.log('💰 Funding request created:', url.toString())
+            console.log('Funding request created:', url.toString())
         } catch (error) {
             console.error('Error generating funding request:', error)
             setPaymentStatus('error')
@@ -124,7 +124,7 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
         <Card className="shadow-lg border-0 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900">
             <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-2xl font-bold text-green-700 dark:text-green-200">
-                    <span className="text-3xl">💰</span> Fund Your Wallet
+                    <span className="text-3xl"></span> Fund Your Wallet
                 </CardTitle>
                 <p className="text-sm text-muted">
                     Add SOL to your wallet using Solana Pay from any external wallet

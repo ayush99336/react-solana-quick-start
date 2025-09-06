@@ -31,42 +31,42 @@ export function Navbar({ currentPage, setCurrentPage, disconnect, accounts, conn
                     onClick={() => setCurrentPage('dashboard')}
                     className="nav-button"
                 >
-                    🏠 Dashboard
+                    Dashboard
                 </Button>
                 <Button
                     variant={currentPage === 'creator' ? 'secondary' : 'ghost'}
                     onClick={() => setCurrentPage('creator')}
                     className="nav-button"
                 >
-                    📊 Creator Hub
+                    Creator Hub
                 </Button>
                 <Button
                     variant={currentPage === 'fan' ? 'secondary' : 'ghost'}
                     onClick={() => setCurrentPage('fan')}
                     className="nav-button"
                 >
-                    🔍 Browse & Subscribe
+                    Browse & Subscribe
                 </Button>
                 <Button
                     variant={currentPage === 'content' ? 'secondary' : 'ghost'}
                     onClick={() => setCurrentPage('content')}
                     className="nav-button"
                 >
-                    🔒 Exclusive Content
+                    Exclusive Content
                 </Button>
                 <Button
                     variant={currentPage === 'solanapay' ? 'secondary' : 'ghost'}
                     onClick={() => setCurrentPage('solanapay')}
                     className="nav-button"
                 >
-                    💳 Solana Pay
+                    Solana Pay
                 </Button>
                 <Button
                     variant={currentPage === 'settings' ? 'secondary' : 'ghost'}
                     onClick={() => setCurrentPage('settings')}
                     className="nav-button"
                 >
-                    ⚙️ Settings
+                    Settings
                 </Button>
             </nav>
             <div className="user-section">
@@ -77,7 +77,7 @@ export function Navbar({ currentPage, setCurrentPage, disconnect, accounts, conn
                             <span className="wallet-address">{short}</span>
                         </div>
                         <button onClick={handleCopyAddress} className="copy-button" title="Copy address">
-                            {copyText === 'Copied!' ? '✅' : '📋'}
+                            {copyText === 'Copied!' ? 'Copied!' : 'Copy'}
                         </button>
                         <BalanceDisplay connection={connection} account={address} refreshTrigger={transactionCount} />
                     </div>

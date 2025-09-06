@@ -43,14 +43,14 @@ export function SolanaPayHub() {
                         onClick={() => setActiveTab('fund')}
                         className="px-6 py-2"
                     >
-                        💰 Fund Wallet
+                        Fund Wallet
                     </Button>
                     <Button
                         variant={activeTab === 'info' ? 'default' : 'ghost'}
                         onClick={() => setActiveTab('info')}
                         className="px-6 py-2"
                     >
-                        ℹ️ How It Works
+                        How It Works
                     </Button>
                 </div>
             </div>

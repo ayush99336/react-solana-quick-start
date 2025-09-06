@@ -187,7 +187,7 @@ export function ExclusiveContent() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-center py-8">
-                        <div className="text-6xl mb-4">🔒</div>
+                        <div className="text-6xl mb-4"></div>
                         <p className="text-muted">Subscribe to creators in the Fan section to access exclusive content</p>
                     </div>
                 </CardContent>

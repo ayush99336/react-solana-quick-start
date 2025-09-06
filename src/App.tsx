@@ -57,13 +57,13 @@ function App() {
                   onClick={() => setPage('fan')}
                   className="action-button secondary"
                 >
-                  🔍 Browse Creators
+                  Browse Creators
                 </button>
                 <button
                   onClick={() => setPage('solanapay')}
                   className="action-button accent"
                 >
-                  💰 Fund Wallet
+                  Fund Wallet
                 </button>
               </div>
             </div>
@@ -71,7 +71,7 @@ function App() {
             {/* Stats Overview */}
             <div className="stats-grid">
               <div className="stat-card">
-                <div className="stat-icon">💳</div>
+                <div className="stat-icon"></div>
                 <div className="stat-content">
                   <h3>Wallet</h3>
                   <div className="stat-value">{shortAddr}</div>
@@ -79,7 +79,7 @@ function App() {
                     onClick={copyAddr}
                     className="stat-action"
                   >
-                    {copied ? '✅ Copied!' : '📋 Copy Address'}
+                    {copied ? 'Copied!' : 'Copy Address'}
                   </button>
                 </div>
               </div>
@@ -88,7 +88,7 @@ function App() {
                 <div className="stat-content">
                   <h3>Network</h3>
                   <div className="stat-value">Solana {connection?.rpcEndpoint.includes('devnet') ? 'Devnet' : 'Mainnet'}</div>
-                  <div className="stat-status online">🟢 Connected</div>
+                  <div className="stat-status online">Connected</div>
                 </div>
               </div>
               <div className="stat-card">
@@ -149,13 +149,13 @@ function App() {
       <div className="login-box">
         <div className="login-header">
           <h1 className="logo">Creator<span>Pass</span></h1>
-          <div className="login-badge">💎 Premium</div>
+          <div className="login-badge">Premium</div>
         </div>
         <h2>Web3 Subscription Manager</h2>
         <p className="login-description">
-          🚀 Manage creator subscriptions seamlessly on Solana<br />
-          🔐 Secure, seedless authentication with Web3Auth<br />
-          💰 Direct creator support & exclusive content access
+          Manage creator subscriptions seamlessly on Solana<br />
+          Secure, seedless authentication with Web3Auth<br />
+          Direct creator support & exclusive content access
         </p>
         <button onClick={() => connect()} className="login-button">
           🔗 Connect Wallet & Get Started

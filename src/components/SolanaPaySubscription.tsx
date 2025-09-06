@@ -3,8 +3,6 @@ import { useSolanaWallet } from '@web3auth/modal/react/solana'
 import { PublicKey, Keypair } from '@solana/web3.js'
 import { encodeURL, createQR, findReference } from '@solana/pay'
 import BigNumber from 'bignumber.js'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Button } from './ui/button'
 
 interface Creator {
     address: string
@@ -64,12 +62,12 @@ export function SolanaPaySubscription({
                 if (!monitoringRef.current) return
 
                 try {
-                    console.log(`🔍 Monitoring payment attempt ${attempts + 1}/${maxAttempts}`)
+                    console.log(`Monitoring payment attempt ${attempts + 1}/${maxAttempts}`)
                     const signatureInfo = await findReference(connection, reference, {
                         finality: 'confirmed'
                     })
 
-                    console.log('✅ Subscription payment confirmed!', signatureInfo.signature)
+                    console.log('Subscription payment confirmed!', signatureInfo.signature)
                     setPaymentStatus('confirmed')
                     monitoringRef.current = false
 
@@ -112,7 +110,7 @@ export function SolanaPaySubscription({
         try {
             setPaymentStatus('generating')
             setErrorMessage('')
-            console.log('🎯 Creating subscription payment request...')
+            console.log('Creating subscription payment request...')
             console.log('Creator payout wallet:', creator.payoutWallet)
             console.log('Tier price:', tier.price, '-> parsed:', priceValue)
 
@@ -142,7 +140,7 @@ export function SolanaPaySubscription({
                         qrRef.current.innerHTML = ''
                         const qrCode = createQR(url, 280, 'white')
                         qrCode.append(qrRef.current)
-                        console.log('✅ QR code generated successfully')
+                        console.log('QR code generated successfully')
                     } catch (qrError) {
                         console.error('QR code generation failed:', qrError)
                         setErrorMessage('Failed to generate QR code: ' + (qrError instanceof Error ? qrError.message : 'Unknown error'))
@@ -153,7 +151,7 @@ export function SolanaPaySubscription({
             }, 100)
 
             setPaymentStatus('ready')
-            console.log('🎯 Subscription payment request created successfully')
+            console.log('Subscription payment request created successfully')
         } catch (error) {
             console.error('Error generating subscription payment:', error)
             setErrorMessage(error instanceof Error ? error.message : 'Failed to generate payment request')
@@ -179,7 +177,7 @@ export function SolanaPaySubscription({
             if (currentRef.current) {
                 currentRef.current.innerHTML = ''
                 qrCode.append(currentRef.current)
-                console.log('✅ QR code regenerated for', paymentStatus, 'state')
+                console.log('QR code regenerated for', paymentStatus, 'state')
             }
         } catch (error) {
             console.error('Failed to regenerate QR code:', error)
@@ -196,28 +194,26 @@ export function SolanaPaySubscription({
     }
 
     return (
-        <Card className="shadow-xl border-0 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900">
-            <CardHeader className="pb-4">
+        <div className="shadow-xl rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900 overflow-hidden">
+            <div className="p-6 pb-4 border-b border-purple-100 dark:border-purple-800">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2 text-xl font-bold text-purple-700 dark:text-purple-200">
+                    <h3 className="flex items-center gap-2 text-xl font-bold text-purple-700 dark:text-purple-200">
                         <span className="text-2xl">🎫</span> Subscribe via Solana Pay
-                    </CardTitle>
+                    </h3>
                     {onCancel && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
+                        <button
                             onClick={onCancel}
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-gray-500 hover:text-gray-700 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full p-2 transition-colors"
                         >
                             ✕
-                        </Button>
+                        </button>
                     )}
                 </div>
-                <p className="text-sm text-purple-600 dark:text-purple-300">
+                <p className="text-sm text-purple-600 dark:text-purple-300 mt-2">
                     Scan QR code with any Solana wallet to subscribe
                 </p>
-            </CardHeader>
-            <CardContent className="space-y-6">
+            </div>
+            <div className="p-6 space-y-6">
                 {/* Subscription Details */}
                 <div className="bg-white dark:bg-gray-900/50 rounded-lg p-4 space-y-3">
                     <div className="flex justify-between items-center">
@@ -260,13 +256,12 @@ export function SolanaPaySubscription({
                         <div className="text-red-600">
                             <div className="text-lg">❌</div>
                             <p>Error: {errorMessage}</p>
-                            <Button
+                            <button
                                 onClick={generateSubscriptionPayment}
-                                className="mt-2"
-                                size="sm"
+                                className="mt-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
                             >
                                 Retry
-                            </Button>
+                            </button>
                         </div>
                     )}
 
@@ -288,32 +283,28 @@ export function SolanaPaySubscription({
 
                             {/* Fallback if QR doesn't show */}
                             <div className="space-y-2">
-                                <Button
+                                <button
                                     onClick={() => regenerateQRCode()}
-                                    variant="outline"
-                                    size="sm"
-                                    className="w-full"
+                                    className="w-full px-4 py-2 border border-purple-300 hover:border-purple-400 text-purple-700 hover:text-purple-800 bg-white hover:bg-purple-50 dark:bg-gray-800 dark:text-purple-300 dark:hover:bg-gray-700 rounded-lg font-medium transition-colors"
                                 >
                                     🔄 Regenerate QR Code
-                                </Button>
+                                </button>
                             </div>
 
                             <div className="space-y-2">
-                                <Button
+                                <button
                                     onClick={startMonitoring}
-                                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                                    className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg font-semibold transition-all transform hover:scale-105 shadow-md"
                                 >
                                     🔍 Start Payment Monitoring
-                                </Button>
+                                </button>
 
-                                <Button
+                                <button
                                     onClick={copyToClipboard}
-                                    variant="outline"
-                                    size="sm"
-                                    className="w-full"
+                                    className="w-full px-4 py-2 border border-purple-300 hover:border-purple-400 text-purple-700 hover:text-purple-800 bg-white hover:bg-purple-50 dark:bg-gray-800 dark:text-purple-300 dark:hover:bg-gray-700 rounded-lg font-medium transition-colors"
                                 >
                                     📋 Copy Payment URL
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     )}
@@ -350,7 +341,7 @@ export function SolanaPaySubscription({
 
                 {/* Instructions */}
                 {(paymentStatus === 'ready' || paymentStatus === 'monitoring') && (
-                    <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
+                    <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
                         <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">How to pay:</h4>
                         <ol className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
                             <li>1. Open your Solana wallet app (Phantom, Solflare, etc.)</li>
@@ -360,7 +351,7 @@ export function SolanaPaySubscription({
                         </ol>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     )
 }

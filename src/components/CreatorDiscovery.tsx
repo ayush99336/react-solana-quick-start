@@ -248,9 +248,9 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
         return (
             <div className="subscriptions-container">
                 <div className="empty-state">
-                    <div className="empty-icon">🔍</div>
+                    <div className="empty-icon"></div>
                     <h3>Discovering Creators</h3>
-                    <p>Scanning the network for amazing creators...</p>
+                    <p>Scanning the network for creators...</p>
                 </div>
             </div>
         )
@@ -260,12 +260,12 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
         return (
             <div className="subscriptions-container">
                 <div className="empty-state">
-                    <div className="empty-icon">🎨</div>
+                    <div className="empty-icon"></div>
                     <h3>No Creators Found</h3>
                     <p>No creators with subscription tiers found on the network.</p>
                     <div className="empty-actions">
                         <Button onClick={loadAllCreators} className="refresh-premium-button">
-                            🔄 Refresh Creators
+                            Refresh Creators
                         </Button>
                     </div>
                 </div>
@@ -278,15 +278,15 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
             {/* Header */}
             <div className="subscriptions-header">
                 <div>
-                    <h2 className="subscriptions-title">🔍 Discover Creators</h2>
+                    <h2 className="subscriptions-title">Discover Creators</h2>
                     <div className="subscriptions-stats">
                         <span className="stat-badge active">
-                            🎨 {creators.length} Creator{creators.length !== 1 ? 's' : ''} Found
+                            {creators.length} Creator{creators.length !== 1 ? 's' : ''} Found
                         </span>
                     </div>
                 </div>
                 <Button onClick={loadAllCreators} className="refresh-premium-button">
-                    🔄 Refresh Creators
+                    Refresh Creators
                 </Button>
             </div>
 
@@ -306,11 +306,11 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
                                 <div className="tier-info">
                                     <h4 className="tier-name">Creator {creator.owner.slice(0, 8)}...{creator.owner.slice(-4)}</h4>
                                     <div className="creator-info">
-                                        🎨 {creator.tiers.length} subscription tier{creator.tiers.length !== 1 ? 's' : ''}
+                                        {creator.tiers.length} subscription tier{creator.tiers.length !== 1 ? 's' : ''}
                                     </div>
                                 </div>
                                 <div className="status-badge active">
-                                    ✅ AVAILABLE
+                                    AVAILABLE
                                 </div>
                             </div>
                             <div className="card-content">
@@ -323,7 +323,7 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
                                                     <span className="tier-price">{tier.price}</span>
                                                 </div>
                                                 <div className="tier-info-row">
-                                                    <span className="tier-duration">⏰ {tier.duration}</span>
+                                                    <span className="tier-duration">{tier.duration}</span>
                                                 </div>
                                             </div>
                                             <div className="tier-actions">
@@ -334,7 +334,7 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
                                                     variant="default"
                                                     className="subscribe-button primary"
                                                 >
-                                                    {txLoading && subscribingTo === tier.address ? '⏳ Subscribing...' : '⚡ Quick Subscribe'}
+                                                    {txLoading && subscribingTo === tier.address ? 'Subscribing...' : 'Quick Subscribe'}
                                                 </Button>
                                                 <Button
                                                     size="sm"
@@ -342,7 +342,7 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
                                                     variant="outline"
                                                     className="subscribe-button secondary"
                                                 >
-                                                    💳 Solana Pay
+                                                    Solana Pay
                                                 </Button>
                                             </div>
                                         </div>
@@ -355,13 +355,13 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
                                             className="view-profile-button"
                                             onClick={() => onSelectCreator(creator)}
                                         >
-                                            👤 View Profile
+                                            View Profile
                                         </Button>
                                     </div>
                                 )}
                                 {txError && (
                                     <div className="error-message">
-                                        ⚠️ {txError.message}
+                                        {txError.message}
                                     </div>
                                 )}
                             </div>

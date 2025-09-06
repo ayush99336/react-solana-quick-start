@@ -215,18 +215,18 @@ export function MySubscriptions() {
             {/* Header */}
             <div className="subscriptions-header">
                 <div>
-                    <h2 className="subscriptions-title">📋 My Subscriptions</h2>
+                    <h2 className="subscriptions-title">My Subscriptions</h2>
                     <div className="subscriptions-stats">
                         <span className="stat-badge active">
-                            🟢 {activeSubscriptions.length} Active
+                            {activeSubscriptions.length} Active
                         </span>
                         <span className="stat-badge expired">
-                            🟠 {expiredSubscriptions.length} Expired
+                            {expiredSubscriptions.length} Expired
                         </span>
                     </div>
                 </div>
                 <Button onClick={loadMySubscriptions} className="refresh-premium-button">
-                    🔄 Refresh Subscriptions
+                    Refresh Subscriptions
                 </Button>
             </div>
 
@@ -247,21 +247,21 @@ export function MySubscriptions() {
                                     <div className="tier-info">
                                         <h4 className="tier-name">{sub.tierName}</h4>
                                         <div className="creator-info">
-                                            👤 {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
+                                            {sub.creatorOwner.slice(0, 8)}...{sub.creatorOwner.slice(-4)}
                                         </div>
                                     </div>
                                     <div className="status-badge active">
-                                        ✅ ACTIVE
+                                        ACTIVE
                                     </div>
                                 </div>
                                 <div className="card-content">
                                     <div className="subscription-details">
                                         <div className="detail-item">
-                                            <span className="detail-label">💰 Price</span>
+                                            <span className="detail-label">Price</span>
                                             <span className="detail-value">{sub.price}</span>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">⏰ Duration</span>
+                                            <span className="detail-label">Duration</span>
                                             <span className="detail-value">{sub.duration}</span>
                                         </div>
                                         <div className="detail-item">

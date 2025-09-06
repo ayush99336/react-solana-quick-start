@@ -21,12 +21,12 @@ export function SolanaPay() {
 
         const monitorPayment = async () => {
             try {
-                console.log('🔍 Monitoring for payment...');
+                console.log('Monitoring for payment...');
                 const signatureInfo = await findReference(connection, reference, {
                     finality: 'confirmed'
                 });
 
-                console.log('✅ Payment confirmed!', signatureInfo.signature);
+                console.log('Payment confirmed!', signatureInfo.signature);
                 setPaymentStatus('confirmed');
             } catch (error) {
                 console.log('Payment not found yet, retrying...');
