@@ -202,7 +202,7 @@ export function ExclusiveContent() {
     return (
         (
             // Removed space-y-6 from the main container for more explicit margin control
-            <div className="">
+            <div className="pb-6 m6-10">
                 {/* --- Header Section --- */}
                 {/* Added a bottom margin to create space below this section */}
                 <div className="flex justify-between items-center mb-6">
@@ -217,7 +217,7 @@ export function ExclusiveContent() {
 
                 {/* --- Content Grid --- */}
                 {/* Added a bottom margin to create the gap between the cards and the "How it works" box */}
-                <div className="grid gap-6 mb-6">
+                <div className="grid gap-6 mb-8">
                     {accessibleContent.map((content, index) => (
                         // FIX 1: Added `text-center` to the main card container to center all text content
                         <div key={index} className="rounded-lg border bg-card text-card-foreground shadow-sm border-green-200 dark:border-green-800 text-center">
