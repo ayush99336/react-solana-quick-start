@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useSolanaWallet, useSignAndSendTransaction } from '@web3auth/modal/react/solana'
 import { PublicKey, TransactionMessage, VersionedTransaction } from '@solana/web3.js'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { findPassPda } from '../lib/pdas'
 import { getSubscribeOrRenewInstructionDataEncoder } from '../../codama/client/js/generated/instructions'
 import { RX_PROGRAM_ADDRESS } from '../../codama/client/js/generated/programs'
 import { toWeb3Instruction } from '../lib/codamaAdapter'
 import { Address, AccountRole } from 'gill'
+import { SolanaPaySubscription } from './SolanaPaySubscription'
 import bs58 from 'bs58'
 
 interface Creator {
@@ -128,6 +128,8 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
     const [creators, setCreators] = useState<Creator[]>([])
     const [loading, setLoading] = useState(true)
     const [subscribingTo, setSubscribingTo] = useState<string | null>(null)
+    const [showSolanaPayModal, setShowSolanaPayModal] = useState(false)
+    const [selectedSubscription, setSelectedSubscription] = useState<{ creator: Creator, tier: Creator['tiers'][0] } | null>(null)
     const currentUser = accounts?.[0]
 
     const loadAllCreators = async () => {
@@ -224,87 +226,163 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
         }
     }
 
+    const subscribeWithSolanaPay = (creator: Creator, tier: typeof creator.tiers[0]) => {
+        setSelectedSubscription({ creator, tier })
+        setShowSolanaPayModal(true)
+    }
+
+    const handleSolanaPayComplete = (signature: string) => {
+        console.log('Solana Pay subscription completed:', signature)
+        setShowSolanaPayModal(false)
+        setSelectedSubscription(null)
+        // Optionally refresh the creators list or show success message
+        alert(`Subscription payment confirmed! Transaction: ${signature.slice(0, 8)}...${signature.slice(-4)}`)
+    }
+
+    const handleSolanaPayCancel = () => {
+        setShowSolanaPayModal(false)
+        setSelectedSubscription(null)
+    }
+
     if (loading) {
         return (
-            <Card>
-                <CardContent className="p-6">
-                    <div className="text-center">Loading creators globally...</div>
-                </CardContent>
-            </Card>
+            <div className="subscriptions-container">
+                <div className="empty-state">
+                    <div className="empty-icon">🔍</div>
+                    <h3>Discovering Creators</h3>
+                    <p>Scanning the network for amazing creators...</p>
+                </div>
+            </div>
         )
     }
 
     if (creators.length === 0) {
         return (
-            <Card>
-                <CardHeader>
-                    <CardTitle>No Creators Found</CardTitle>
-                    <p className="text-sm text-muted">
-                        No creators with subscription tiers found on the network.
-                    </p>
-                </CardHeader>
-                <CardContent>
-                    <Button onClick={loadAllCreators} variant="outline">
-                        Refresh
-                    </Button>
-                </CardContent>
-            </Card>
+            <div className="subscriptions-container">
+                <div className="empty-state">
+                    <div className="empty-icon">🎨</div>
+                    <h3>No Creators Found</h3>
+                    <p>No creators with subscription tiers found on the network.</p>
+                    <div className="empty-actions">
+                        <Button onClick={loadAllCreators} className="refresh-premium-button">
+                            🔄 Refresh Creators
+                        </Button>
+                    </div>
+                </div>
+            </div>
         )
     }
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Discover Creators ({creators.length} found)</h2>
-                <Button onClick={loadAllCreators} variant="outline" size="sm">
-                    Refresh
+        <div className="subscriptions-container">
+            {/* Header */}
+            <div className="subscriptions-header">
+                <div>
+                    <h2 className="subscriptions-title">🔍 Discover Creators</h2>
+                    <div className="subscriptions-stats">
+                        <span className="stat-badge active">
+                            🎨 {creators.length} Creator{creators.length !== 1 ? 's' : ''} Found
+                        </span>
+                    </div>
+                </div>
+                <Button onClick={loadAllCreators} className="refresh-premium-button">
+                    🔄 Refresh Creators
                 </Button>
             </div>
 
-            <div className="grid gap-6">
-                {creators.map((creator) => (
-                    <Card key={creator.address} className="hover:shadow-lg transition-shadow">
-                        <CardHeader>
-                            <CardTitle>Creator {creator.owner.slice(0, 8)}...{creator.owner.slice(-4)}</CardTitle>
-                            <p className="text-sm text-muted">{creator.tiers.length} subscription tier{creator.tiers.length !== 1 ? 's' : ''}</p>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid gap-3 mb-4">
-                                {creator.tiers.map((tier) => (
-                                    <div key={tier.index} className="flex justify-between items-center p-3 bg-[var(--background)] rounded-lg">
-                                        <div>
-                                            <div className="font-medium">{tier.name}</div>
-                                            <div className="text-sm text-muted">{tier.duration}</div>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <div className="text-lg font-bold text-[var(--primary)]">{tier.price}</div>
-                                            <Button
-                                                size="sm"
-                                                onClick={() => subscribeTo(creator, tier)}
-                                                disabled={txLoading && subscribingTo === tier.address}
-                                            >
-                                                {txLoading && subscribingTo === tier.address ? 'Subscribing...' : 'Subscribe'}
-                                            </Button>
-                                        </div>
+            {/* Creators Grid */}
+            <div className="subscription-section">
+                <div className="section-header">
+                    <h3 className="section-title active">
+                        <span className="status-indicator active"></span>
+                        Available Creators
+                    </h3>
+                    <span className="section-count">{creators.length}</span>
+                </div>
+                <div className="subscription-grid">
+                    {creators.map((creator) => (
+                        <div key={creator.address} className="creator-card">
+                            <div className="card-header">
+                                <div className="tier-info">
+                                    <h4 className="tier-name">Creator {creator.owner.slice(0, 8)}...{creator.owner.slice(-4)}</h4>
+                                    <div className="creator-info">
+                                        🎨 {creator.tiers.length} subscription tier{creator.tiers.length !== 1 ? 's' : ''}
                                     </div>
-                                ))}
+                                </div>
+                                <div className="status-badge active">
+                                    ✅ AVAILABLE
+                                </div>
                             </div>
-                            {onSelectCreator && (
-                                <Button
-                                    variant="outline"
-                                    className="w-full"
-                                    onClick={() => onSelectCreator(creator)}
-                                >
-                                    View Profile
-                                </Button>
-                            )}
-                            {txError && (
-                                <div className="text-red-500 text-sm mt-2">{txError.message}</div>
-                            )}
-                        </CardContent>
-                    </Card>
-                ))}
+                            <div className="card-content">
+                                <div className="tiers-container">
+                                    {creator.tiers.map((tier) => (
+                                        <div key={tier.index} className="tier-card">
+                                            <div className="tier-details">
+                                                <div className="tier-header">
+                                                    <h5 className="tier-title">{tier.name}</h5>
+                                                    <span className="tier-price">{tier.price}</span>
+                                                </div>
+                                                <div className="tier-info-row">
+                                                    <span className="tier-duration">⏰ {tier.duration}</span>
+                                                </div>
+                                            </div>
+                                            <div className="tier-actions">
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => subscribeTo(creator, tier)}
+                                                    disabled={txLoading && subscribingTo === tier.address}
+                                                    variant="default"
+                                                    className="subscribe-button primary"
+                                                >
+                                                    {txLoading && subscribingTo === tier.address ? '⏳ Subscribing...' : '⚡ Quick Subscribe'}
+                                                </Button>
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => subscribeWithSolanaPay(creator, tier)}
+                                                    variant="outline"
+                                                    className="subscribe-button secondary"
+                                                >
+                                                    💳 Solana Pay
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {onSelectCreator && (
+                                    <div className="creator-actions">
+                                        <Button
+                                            variant="outline"
+                                            className="view-profile-button"
+                                            onClick={() => onSelectCreator(creator)}
+                                        >
+                                            👤 View Profile
+                                        </Button>
+                                    </div>
+                                )}
+                                {txError && (
+                                    <div className="error-message">
+                                        ⚠️ {txError.message}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            {/* Solana Pay Modal */}
+            {showSolanaPayModal && selectedSubscription && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                        <SolanaPaySubscription
+                            creator={selectedSubscription.creator}
+                            tier={selectedSubscription.tier}
+                            onPaymentComplete={handleSolanaPayComplete}
+                            onCancel={handleSolanaPayCancel}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

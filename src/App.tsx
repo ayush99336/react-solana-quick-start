@@ -12,8 +12,7 @@ import { CreatorDashboard } from "./components/CreatorDashboard";
 import { CreatorDiscovery } from "./components/CreatorDiscovery";
 import { MySubscriptions } from "./components/MySubscriptions";
 import { ExclusiveContent } from "./components/ExclusiveContent";
-import { SolanaPay } from "./components/solanaPay";
-import { SolanaPayExample } from "./components/SolanaPayIntegration";
+import { SolanaPayHub } from "./components/SolanaPayHub";
 import { Navbar } from "./components/Navbar";
 import { useMemo, useState } from "react";
 function App() {
@@ -59,6 +58,12 @@ function App() {
                   className="action-button secondary"
                 >
                   🔍 Browse Creators
+                </button>
+                <button
+                  onClick={() => setPage('solanapay')}
+                  className="action-button accent"
+                >
+                  💰 Fund Wallet
                 </button>
               </div>
             </div>
@@ -114,12 +119,7 @@ function App() {
       case 'content':
         return <ExclusiveContent />
       case 'solanapay':
-        return (
-          <div className="space-y-6">
-            <SolanaPay />
-            <SolanaPayExample />
-          </div>
-        )
+        return <SolanaPayHub />
       case 'settings':
         return <div className="card"><h3>Settings</h3><div className="text-muted">Wallet and preferences.</div></div>
       default:
