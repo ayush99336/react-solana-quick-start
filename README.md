@@ -54,6 +54,7 @@ SubSync leverages Solana's high-speed, low-cost infrastructure and Web3Auth's se
 - **Cross-Platform Payments**: Support for both browser and mobile QR code flows
 - **Real-time Updates**: Instant subscription status and content access updates
 - **Account-Based Discovery**: Global scanning of on-chain subscription data
+- **Transaction Notifications**: Real-time toast notifications with Solana Explorer links for all transactions
 
 ## 🛠 Technical Architecture
 

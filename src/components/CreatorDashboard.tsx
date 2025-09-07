@@ -7,6 +7,7 @@ import { RX_PROGRAM_ADDRESS } from '../../codama/client/js/generated/programs'
 import { toWeb3Instruction } from '../lib/codamaAdapter'
 import { findCreatorPda, findTierPda } from '../lib/pdas'
 import { fetchMaybeCreatorW3J, fetchMaybeTierW3J } from '../lib/fetchers'
+import { showTransactionToast, showErrorToast, showLoadingToast } from '../utils/toasts'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
@@ -76,6 +77,16 @@ export function CreatorDashboard() {
 
         checkCreatorStatus()
     }, [owner, connection, sig])
+
+    // Handle transaction completion notifications
+    useEffect(() => {
+        if (sig) {
+            showTransactionToast(sig)
+        }
+        if (error) {
+            showErrorToast(error.message || 'Transaction failed')
+        }
+    }, [sig, error])
 
     async function initCreator(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()

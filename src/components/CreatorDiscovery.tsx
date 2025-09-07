@@ -8,6 +8,7 @@ import { RX_PROGRAM_ADDRESS } from '../../codama/client/js/generated/programs'
 import { toWeb3Instruction } from '../lib/codamaAdapter'
 import { Address, AccountRole } from 'gill'
 import { SolanaPaySubscription } from './SolanaPaySubscription'
+import { showTransactionToast, showErrorToast } from '../utils/toasts'
 import bs58 from 'bs58'
 
 interface Creator {
@@ -218,9 +219,13 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
             })
             const tx = new VersionedTransaction(msg.compileToV0Message())
 
-            await signAndSendTransaction(tx)
-        } catch (error) {
+            const signature = await signAndSendTransaction(tx)
+            if (signature) {
+                showTransactionToast(signature)
+            }
+        } catch (error: any) {
             console.error('Subscription failed:', error)
+            showErrorToast(error?.message || 'Subscription failed')
         } finally {
             setSubscribingTo(null)
         }
@@ -235,8 +240,8 @@ export function CreatorDiscovery({ onSelectCreator, excludeCurrentUser = false }
         console.log('Solana Pay subscription completed:', signature)
         setShowSolanaPayModal(false)
         setSelectedSubscription(null)
-        // Optionally refresh the creators list or show success message
-        alert(`Subscription payment confirmed! Transaction: ${signature.slice(0, 8)}...${signature.slice(-4)}`)
+        // Show transaction toast
+        showTransactionToast(signature)
     }
 
     const handleSolanaPayCancel = () => {

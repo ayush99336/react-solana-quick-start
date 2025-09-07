@@ -3,6 +3,7 @@ import { useSolanaWallet } from '@web3auth/modal/react/solana'
 import { PublicKey, Keypair } from '@solana/web3.js'
 import { encodeURL, createQR, findReference } from '@solana/pay'
 import BigNumber from 'bignumber.js'
+import { showTransactionToast, showErrorToast, showSuccessToast } from '../utils/toasts'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 
@@ -95,9 +96,10 @@ export function WalletFunding({ onFundingComplete }: WalletFundingProps) {
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(paymentUrl)
-            alert('Funding URL copied to clipboard!')
+            showSuccessToast('Funding URL copied to clipboard!')
         } catch (error) {
             console.error('Failed to copy to clipboard:', error)
+            showErrorToast('Failed to copy to clipboard')
         }
     }
 

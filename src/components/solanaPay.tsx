@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { LAMPORTS_PER_SOL, Cluster, clusterApiUrl, Connection, PublicKey, Keypair } from '@solana/web3.js';
 import { encodeURL, createQR, findReference } from '@solana/pay';
 import BigNumber from 'bignumber.js';
+import { showTransactionToast, showErrorToast, showSuccessToast } from '../utils/toasts';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 
@@ -92,9 +93,10 @@ export function SolanaPay() {
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(paymentUrl);
-            alert('Payment URL copied to clipboard!');
+            showSuccessToast('Payment URL copied to clipboard!');
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
+            showErrorToast('Failed to copy to clipboard');
         }
     };
 

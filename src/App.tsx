@@ -2,6 +2,7 @@ import "./App.css";
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
 import { WALLET_CONNECTORS } from "@web3auth/modal";
 import { useSolanaWallet } from "@web3auth/modal/react/solana";
+import { Toaster } from 'react-hot-toast';
 // Legacy demo components are no longer shown by default; keep imports commented if needed later
 // import { SignTransaction } from "./components/signTransaction";
 // import { Balance } from "./components/getBalance";
@@ -181,7 +182,35 @@ function App() {
     </div>
   );
 
-  return isConnected ? loggedInView : unloggedInView;
+  return (
+    <>
+      {isConnected ? loggedInView : unloggedInView}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
+    </>
+  );
 }
 
 export default App;
