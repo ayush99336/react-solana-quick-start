@@ -1,4 +1,5 @@
 # SubSync - Decentralized Creator Subscription Platform
+Live Link: https://subsync-azure.vercel.app/
 
 **MetaMask Embedded Wallets & Solana Dev Cook-Off Submission**
 
@@ -349,6 +350,6 @@ MIT License - Built for the MetaMask Embedded Wallets & Solana Dev Cook-Off
 
 - **Team**: Solo Developer
 - **Category**: Best Overall + Innovation Track
-- **Demo**: Live at localhost:5173 (setup instructions above)
+- **Demo**: Live at https://subsync-azure.vercel.app/ (setup instructions above)
 - **Code**: This repository with full source code access
 - **Video Demo**: [Coming Soon - Record live demo session]
