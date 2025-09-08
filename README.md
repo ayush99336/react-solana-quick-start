@@ -1,6 +1,6 @@
 # SubSync - Decentralized Creator Subscription Platform
 Live Link: https://subsync-azure.vercel.app/
-
+program deployed at : D43Xs9NAXeKBHUhDATKua8kvJhmr5gXMNPTdMfR2z29n devnet
 **MetaMask Embedded Wallets & Solana Dev Cook-Off Submission**
 
 SubSync is a revolutionary decentralized subscription platform built on Solana that empowers creators to monetize their content through Web3 subscriptions. Using MetaMask Embedded Wallets (Web3Auth), users can onboard instantly with just their social logins—no seed phrases, no complex wallet setup, just seamless Web3 access.
